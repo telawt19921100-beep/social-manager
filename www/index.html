@@ -2,39 +2,271 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fdfbf6">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 <title>إنجز</title>
 <style>
-  :root { --bg:#f6f7f9; --fg:#1a1d21; --card:#fff; --accent:#2563eb; --muted:#6b7280; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#111418; --fg:#e8eaed; --card:#1b1f25; --muted:#9aa0a6; } }
-  :root[data-theme="dark"] { --bg:#111418; --fg:#e8eaed; --card:#1b1f25; --muted:#9aa0a6; }
-  body { margin:0; padding:16px; font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); }
-  nav { display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap; }
-  nav button { background:var(--card); color:var(--fg); border:1px solid #8884; }
-  nav button.active { background:var(--accent); color:#fff; border-color:var(--accent); }
-  section { background:var(--card); border-radius:12px; padding:12px; margin-bottom:12px; }
-  section[hidden] { display:none; }
-  input, textarea { width:100%; box-sizing:border-box; padding:8px; margin:4px 0; font-size:16px; }
-  button { background:var(--accent); color:#fff; border:0; border-radius:8px; padding:10px 14px; font-size:16px; }
-  button.secondary { background:transparent; color:var(--fg); border:1px solid #8884; }
-  li { list-style:none; border-bottom:1px solid #8884; padding:8px 0; }
-  ul { padding:0; margin:0; }
-  .muted { color:var(--muted); font-size:14px; }
-  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  :root {
+    --bg: #fdfbf6;
+    --surface: #ffffff;
+    --surface-2: #faf6ec;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #ece4cf;
+    --navy: #1e3a8a;
+    --navy-deep: #0f172a;
+    --gold: #b8860b;
+    --gold-soft: #f5d37a;
+    --primary-ink: #ffffff;
+    --danger: #b91c1c;
+    --success: #15803d;
+    --radius: 16px;
+    --shadow: 0 1px 2px rgba(15,23,42,.05), 0 8px 24px rgba(15,23,42,.06);
+  }
+  /* Light theme is the default; the app does not switch to dark automatically. */
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); }
+  body {
+    font-family: "Cairo", "Segoe UI", Tahoma, system-ui, sans-serif;
+    font-size: 16px; line-height: 1.7;
+    padding: 0 0 92px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Header */
+  header.app-header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(255,255,255,.92); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    padding-top: calc(12px + env(safe-area-inset-top));
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand img { width: 42px; height: 42px; border-radius: 12px; box-shadow: 0 4px 12px rgba(30,58,138,.25); }
+  .brand h1 { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy-deep); letter-spacing: .2px; }
+  .brand small { color: var(--muted); font-size: 12px; font-weight: 600; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 700; padding: 5px 12px; border-radius: 999px;
+    background: var(--surface-2); color: var(--muted); border: 1px solid var(--border);
+  }
+  .badge .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .badge.on { color: var(--success); background: rgba(21,128,61,.08); border-color: rgba(21,128,61,.2); }
+
+  main { padding: 16px; max-width: 720px; margin: 0 auto; }
+  main > section[hidden] { display: none; }
+
+  /* Blessing banner */
+  .blessing {
+    position: relative; text-align: center;
+    padding: 18px 16px; margin-bottom: 16px;
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, #fffdf6, #fbf3dc);
+    border: 1px solid #ead9a6;
+    box-shadow: var(--shadow);
+  }
+  .blessing::before, .blessing::after {
+    content: ""; position: absolute; left: 50%; width: 80px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: translateX(-50%);
+  }
+  .blessing::before { top: -1px; }
+  .blessing::after { bottom: -1px; }
+  .blessing .line {
+    margin: 0; font-size: 17px; font-weight: 700; color: #7a5a0c;
+  }
+  .blessing .salawat {
+    display: block; margin-top: 4px;
+    font-size: 26px; font-weight: 800; color: var(--gold);
+    font-family: "Cairo", serif; line-height: 1.4;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 18px; margin-bottom: 14px;
+  }
+  .card h2 { margin: 0 0 4px; font-size: 19px; font-weight: 800; color: var(--navy-deep); }
+  .card h3 { margin: 18px 0 8px; font-size: 15px; font-weight: 700; color: var(--muted); }
+  .hint { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
+
+  label { display: block; font-size: 14px; font-weight: 600; color: var(--muted); margin: 14px 0 0; }
+  input[type="text"], input:not([type]), input[type="password"], textarea {
+    width: 100%; margin-top: 6px;
+    padding: 12px 14px; font: inherit; color: var(--text);
+    background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    outline: none; transition: border-color .15s, box-shadow .15s;
+  }
+  input:focus, textarea:focus { border-color: var(--navy); box-shadow: 0 0 0 4px rgba(30,58,138,.10); }
+  textarea { resize: vertical; min-height: 64px; }
+  input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--navy); margin: 0; }
+
+  /* Buttons */
+  button {
+    font: inherit; font-weight: 700; cursor: pointer;
+    background: linear-gradient(135deg, var(--navy), #2b4fb8);
+    color: var(--primary-ink);
+    border: 0; border-radius: 12px; padding: 12px 18px;
+    box-shadow: 0 6px 16px rgba(30,58,138,.22);
+    transition: transform .06s ease, box-shadow .15s ease, opacity .15s ease;
+  }
+  button:hover { box-shadow: 0 8px 20px rgba(30,58,138,.28); }
+  button:active { transform: scale(.98); }
+  button:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
+  button.secondary {
+    background: #fff; color: var(--navy);
+    border: 1px solid #dcc98f; box-shadow: none;
+  }
+  button.secondary:hover { background: #fffdf6; }
+  button.ghost { background: transparent; color: var(--muted); box-shadow: none; }
+  button.danger { background: var(--danger); box-shadow: none; }
+  button.block { width: 100%; }
+  .btn-gold {
+    background: linear-gradient(135deg, #d4a017, #b8860b) !important;
+    color: #fff !important;
+    box-shadow: 0 6px 16px rgba(184,134,11,.28) !important;
+  }
+
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .spacer { flex: 1; }
+
+  /* Queue items */
+  #manualList, #autoLog { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  #manualList > li, #autoLog > li {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow);
+  }
+  #manualList > li { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; }
+  #manualList > li > input[type="checkbox"] { margin-top: 5px; grid-row: span 2; }
+  #manualList > li > p { margin: 0; font-weight: 700; grid-column: 2; color: var(--navy-deep); }
+  #manualList > li > textarea { grid-column: 2; margin-top: 2px; }
+  #manualList > li > button { justify-self: start; }
+  #manualList > li > button + button { margin-inline-start: 8px; }
+  #manualList > li > button:not(:first-of-type) { grid-column: 2; }
+  #autoLog > li { font-size: 14px; color: var(--muted); }
+
+  #bulkBar {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow);
+  }
+  #bulkBar .row { margin-top: 12px; }
+  .muted { color: var(--muted); font-size: 13px; }
+
+  /* Bottom navigation */
+  nav {
+    position: fixed; inset-inline: 0; bottom: 0; z-index: 20;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;
+    background: rgba(255,255,255,.96); backdrop-filter: blur(8px);
+    border-top: 1px solid var(--border);
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+  }
+  nav button {
+    background: transparent; color: var(--muted); box-shadow: none;
+    padding: 8px 4px; border-radius: 12px; font-size: 13px; font-weight: 700;
+    position: relative;
+  }
+  nav button:hover { box-shadow: none; }
+  nav button.active { color: var(--navy); background: #f3f6fd; }
+  nav button.active::before {
+    content: ""; position: absolute; top: -8px; left: 30%; right: 30%; height: 3px;
+    border-radius: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+  }
+
+  /* Prayer tab */
+  .next-card {
+    text-align: center; padding: 22px 16px;
+    background: linear-gradient(180deg, #fffdf6, #fbf3dc); border: 1px solid #ead9a6;
+  }
+  .next-card .label { font-size: 13px; color: #7a5a0c; font-weight: 700; }
+  .next-card .name { font-size: 26px; font-weight: 800; color: var(--navy-deep); margin: 2px 0; }
+  .next-card .time { font-size: 20px; font-weight: 700; color: var(--gold); }
+  .next-card .countdown { font-size: 14px; color: var(--muted); margin-top: 4px; }
+  .hijri { font-size: 14px; color: var(--muted); margin-top: 8px; }
+  #prayerList { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 10px; }
+  #prayerList .prayer {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px;
+  }
+  #prayerList .prayer strong { color: var(--navy); }
+  #prayerList .prayer.next { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,134,11,.12); }
+  .prayer-check { display: flex; align-items: center; gap: 10px; margin: 8px 0; font-size: 15px; color: var(--text); }
+  nav { grid-template-columns: repeat(5, 1fr); }
+
+  @media (min-width: 720px) {
+    body { padding-bottom: 0; }
+    nav { position: sticky; top: auto; bottom: 16px; width: fit-content; margin: 0 auto 16px; border-radius: 999px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+    main { padding-bottom: 96px; }
+  }
 </style>
 </head>
 <body>
-<nav>
-  <button class="active" data-tab="manualTab">الطابور اليدوي</button>
-  <button data-tab="autoTab">التلقائي</button>
-  <button data-tab="publishTab">نشر</button>
-  <button data-tab="settingsTab">الإعدادات</button>
-</nav>
+<header class="app-header">
+  <div class="brand">
+    <img src="logo.svg" alt="شعار إنجز">
+    <div>
+      <h1>إنجز</h1>
+      <small>أدر ردودك في دقائق</small>
+    </div>
+  </div>
+  <span class="badge" id="autoBadge"><span class="dot"></span><span id="autoStatus">متوقف</span></span>
+</header>
 
 <main>
+  <div class="blessing">
+    <p class="line">لا تنسى الصلاة على النبي</p>
+    <span class="salawat">ﷺ</span>
+  </div>
+
+  <section id="prayerTab" hidden>
+    <div class="card next-card">
+      <div class="label">الصلاة القادمة</div>
+      <div class="name" id="nextName">—</div>
+      <div class="time" id="nextTime"></div>
+      <div class="countdown" id="nextCountdown"></div>
+      <div class="hijri" id="hijriDate"></div>
+      <div class="muted" id="cityLabel" style="margin-top:6px"></div>
+    </div>
+    <p class="muted" id="prayerStatus" style="text-align:center"></p>
+    <ul id="prayerList"></ul>
+
+    <div class="card" style="margin-top:14px">
+      <h2>إعدادات الصلاة</h2>
+      <label>المدينة<input id="pCity" type="text" value="Cairo"></label>
+      <label>الدولة<input id="pCountry" type="text" value="Egypt"></label>
+      <h3>الصلوات التي تريد تنبيهها</h3>
+      <label class="prayer-check"><input id="pe_Fajr" type="checkbox"> الفجر</label>
+      <label class="prayer-check"><input id="pe_Dhuhr" type="checkbox"> الظهر</label>
+      <label class="prayer-check"><input id="pe_Asr" type="checkbox"> العصر</label>
+      <label class="prayer-check"><input id="pe_Maghrib" type="checkbox"> المغرب</label>
+      <label class="prayer-check"><input id="pe_Isha" type="checkbox"> العشاء</label>
+      <h3>التنبيه</h3>
+      <label class="prayer-check"><input id="pNotify" type="checkbox"> تفعيل إشعار الصلاة</label>
+      <label class="prayer-check"><input id="pSound" type="checkbox"> تنبيه صوتي</label>
+      <div class="row" style="margin-top:14px">
+        <button id="pRingtone" class="secondary">اختيار نغمة الإشعار من الهاتف</button>
+        <span class="muted" id="pRingtoneStatus"></span>
+      </div>
+      <div class="row" style="margin-top:14px">
+        <button id="pTest" class="secondary">تجربة الصوت</button>
+        <span class="spacer"></span>
+        <button id="pSave">حفظ</button>
+      </div>
+    </div>
+  </section>
+
   <section id="manualTab">
-    <h2>تعليقات تنتظر ردك</h2>
-    <p class="muted">راجع المسودة، عدّلها، ثم أرسلها أو تجاهلها.</p>
+    <div class="card">
+      <h2>الطابور اليدوي</h2>
+      <p class="hint">راجع كل مسودة، عدّلها، ثم أرسلها أو تجاهلها.</p>
+    </div>
     <div id="bulkBar" hidden>
       <label>خانة مشتركة كنقطة بداية
         <textarea id="sharedText" rows="2"></textarea>
@@ -42,42 +274,71 @@
       <label>عدة ردود مختلفة (كل سطر رد)
         <textarea id="replyPool" rows="4"></textarea>
       </label>
-      <button id="distributePool" class="secondary">وزّعها على المحدد</button>
       <div class="row">
+        <button id="distributePool" class="secondary">وزّعها على المحدد</button>
         <button id="applyShared" class="secondary">انسخها إلى المحدد</button>
-        <button id="sendSelected">إرسال المحدد</button>
       </div>
-      <p class="muted">لا يُسمح بإرسال نفس الرد لأكثر من شخص. عدّل كل مسودة قبل الإرسال.</p>
+      <div class="row" style="margin-top:12px">
+        <button id="sendSelected" class="block">إرسال المحدد</button>
+      </div>
+      <p class="muted" style="margin-top:12px">لا يُسمح بإرسال نفس الرد لأكثر من شخص. عدّل كل مسودة قبل الإرسال.</p>
     </div>
     <ul id="manualList"></ul>
   </section>
 
   <section id="autoTab" hidden>
-    <h2>الرد التلقائي</h2>
-    <div class="row">
-      <span id="autoStatus"></span>
-      <button id="autoToggle"></button>
+    <div class="card">
+      <h2>الرد التلقائي</h2>
+      <p class="hint">يرد التطبيق على التعليقات الجديدة، بحد أقصى 20 ردًا في اليوم.</p>
+      <div class="row">
+        <span class="badge" id="autoCountBadge"></span>
+        <span class="spacer"></span>
+        <button id="autoToggle"></button>
+      </div>
     </div>
-    <p class="muted" id="autoCount"></p>
     <h3>سجل الردود المُرسلة</h3>
     <ul id="autoLog"></ul>
   </section>
 
   <section id="publishTab" hidden>
-    <h2>نشر منشور على الصفحة</h2>
-    <textarea id="postText" rows="4"></textarea>
-    <button id="publish">نشر</button>
+    <div class="card">
+      <h2>نشر منشور</h2>
+      <p class="hint">يُنشر على صفحتك بعد تأكيدك.</p>
+      <textarea id="postText" rows="5" placeholder="اكتب منشورك هنا..."></textarea>
+      <div style="margin-top:14px">
+        <button id="publish" class="block btn-gold">نشر على الصفحة</button>
+      </div>
+    </div>
   </section>
 
   <section id="settingsTab" hidden>
-    <h2>الإعدادات</h2>
-    <label>معرف الصفحة<input id="pageId" inputmode="numeric"></label>
-    <label>توكن الصفحة (يضيفه صاحب الصفحة)<input id="token" type="password"></label>
-    <label class="row"><input id="footer" type="checkbox" style="width:auto"> أضف تنويهًا "رد تلقائي" للردود الآلية</label>
-    <button id="saveSettings">حفظ</button>
+    <div class="card">
+      <h2>الصفحة</h2>
+      <p class="hint">اربط صفحتك بتسجيل الدخول بفيسبوك.</p>
+      <button id="fbLogin" class="block">تسجيل الدخول بفيسبوك</button>
+      <h3>أو أدخل البيانات يدويًا</h3>
+      <label>معرف الصفحة<input id="pageId" inputmode="numeric"></label>
+      <label>توكن الصفحة<input id="token" type="password"></label>
+    </div>
+    <div class="card">
+      <h2>التنويه</h2>
+      <label class="row" style="color:var(--text);font-size:15px;margin-top:0">
+        <input id="footer" type="checkbox"> أضف تنويه "رد تلقائي" للردود الآلية
+      </label>
+    </div>
+    <button id="saveSettings" class="block">حفظ الإعدادات</button>
   </section>
 </main>
 
+<nav>
+  <button class="active" data-tab="manualTab">الطابور</button>
+  <button data-tab="prayerTab">الصلاة</button>
+  <button data-tab="autoTab">التلقائي</button>
+  <button data-tab="publishTab">نشر</button>
+  <button data-tab="settingsTab">الإعدادات</button>
+</nav>
+
 <script type="module" src="app.js"></script>
+<script type="module" src="prayer.js"></script>
 </body>
 </html>

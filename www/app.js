@@ -168,6 +168,47 @@ $("saveSettings").onclick = () => {
   refresh();
 };
 
+// Facebook login. AUTH_URL is the deployed worker's /login endpoint.
+const AUTH_URL = "https://injaz-auth.YOUR-SUBDOMAIN.workers.dev/login";
+const Native = window.Capacitor ? {
+  Browser: (() => { try { return window.Capacitor.registerPlugin("Browser"); } catch { return undefined; } })(),
+  App: (() => { try { return window.Capacitor.registerPlugin("App"); } catch { return undefined; } })(),
+} : null;
+
+function saveFromPages(pages) {
+  if (!pages.length) return;
+  let chosen = pages[0];
+  if (pages.length > 1) {
+    const list = pages.map((p, i) => `${i + 1}) ${p.name}`).join("\n");
+    const n = parseInt(prompt(`اختر الصفحة:\n${list}`, "1"), 10);
+    chosen = pages[(n || 1) - 1] || pages[0];
+  }
+  store.set("settings", { ...settings(), pageId: chosen.id, token: chosen.token });
+  $("pageId").value = chosen.id;
+  $("token").value = chosen.token;
+  alert(`تم ربط الصفحة: ${chosen.name}`);
+  refresh();
+}
+
+$("fbLogin").onclick = async () => {
+  if (Native?.Browser) await Native.Browser.open({ url: AUTH_URL });
+  else window.location.href = AUTH_URL;
+};
+
+// The worker redirects to injaz://auth?pages=<base64 json>.
+if (Native?.App) {
+  Native.App.addListener("appUrlOpen", (event) => {
+    try {
+      const u = new URL(event.url);
+      const raw = u.searchParams.get("pages");
+      if (!raw) return;
+      const pages = JSON.parse(decodeURIComponent(escape(atob(raw))));
+      if (Native.Browser) Native.Browser.close();
+      saveFromPages(pages);
+    } catch (e) { alert("تعذّر قراءة بيانات الدخول: " + e.message); }
+  });
+}
+
 (function init() {
   const s = settings();
   $("pageId").value = s.pageId;

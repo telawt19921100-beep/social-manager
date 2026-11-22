@@ -1,0 +1,5 @@
+/* B: حيوي (فاتح، تدرجات وردي وبنفسجي) */
+:root:root { --bg:#fdf4ff; --surface:#ffffff; --surface-2:#fbe8ff; --text:#2e1065; --muted:#7e5ca8; --border:#f0d4fb; --primary:#c026d3; --shadow:0 6px 20px rgba(192,38,211,.12); }
+.brand-mark { background: linear-gradient(135deg,#ec4899,#8b5cf6) !important; }
+main button:not(.secondary):not(.ghost) { background: linear-gradient(135deg,#c026d3,#8b5cf6) !important; }
+nav button.active { background: rgba(192,38,211,.12) !important; color:#c026d3 !important; }

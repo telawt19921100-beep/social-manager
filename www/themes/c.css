@@ -1,0 +1,5 @@
+/* C: داكن أنيق (ذهبي على خلفية داكنة) */
+:root:root, :root:root[data-theme="dark"] { --bg:#0b0f1a; --surface:#141b2b; --surface-2:#1d2639; --text:#f5f0e1; --muted:#a8a293; --border:#2a3349; --primary:#d4a017; --primary-ink:#1a1405; --shadow:none; }
+.brand-mark { background: linear-gradient(135deg,#d4a017,#f5d06f) !important; color:#1a1405 !important; }
+main button:not(.secondary):not(.ghost) { color:#1a1405 !important; }
+nav button.active { color:#d4a017 !important; background: rgba(212,160,23,.12) !important; }
