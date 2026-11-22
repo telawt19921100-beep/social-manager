@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>إنجز</title>
+<style>
+  :root { --bg:#f6f7f9; --fg:#1a1d21; --card:#fff; --accent:#2563eb; --muted:#6b7280; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#111418; --fg:#e8eaed; --card:#1b1f25; --muted:#9aa0a6; } }
+  :root[data-theme="dark"] { --bg:#111418; --fg:#e8eaed; --card:#1b1f25; --muted:#9aa0a6; }
+  body { margin:0; padding:16px; font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); }
+  nav { display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap; }
+  nav button { background:var(--card); color:var(--fg); border:1px solid #8884; }
+  nav button.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+  section { background:var(--card); border-radius:12px; padding:12px; margin-bottom:12px; }
+  section[hidden] { display:none; }
+  input, textarea { width:100%; box-sizing:border-box; padding:8px; margin:4px 0; font-size:16px; }
+  button { background:var(--accent); color:#fff; border:0; border-radius:8px; padding:10px 14px; font-size:16px; }
+  button.secondary { background:transparent; color:var(--fg); border:1px solid #8884; }
+  li { list-style:none; border-bottom:1px solid #8884; padding:8px 0; }
+  ul { padding:0; margin:0; }
+  .muted { color:var(--muted); font-size:14px; }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+</style>
+</head>
+<body>
+<nav>
+  <button class="active" data-tab="manualTab">الطابور اليدوي</button>
+  <button data-tab="autoTab">التلقائي</button>
+  <button data-tab="publishTab">نشر</button>
+  <button data-tab="settingsTab">الإعدادات</button>
+</nav>
+
+<main>
+  <section id="manualTab">
+    <h2>تعليقات تنتظر ردك</h2>
+    <p class="muted">راجع المسودة، عدّلها، ثم أرسلها أو تجاهلها.</p>
+    <div id="bulkBar" hidden>
+      <label>خانة مشتركة كنقطة بداية
+        <textarea id="sharedText" rows="2"></textarea>
+      </label>
+      <label>عدة ردود مختلفة (كل سطر رد)
+        <textarea id="replyPool" rows="4"></textarea>
+      </label>
+      <button id="distributePool" class="secondary">وزّعها على المحدد</button>
+      <div class="row">
+        <button id="applyShared" class="secondary">انسخها إلى المحدد</button>
+        <button id="sendSelected">إرسال المحدد</button>
+      </div>
+      <p class="muted">لا يُسمح بإرسال نفس الرد لأكثر من شخص. عدّل كل مسودة قبل الإرسال.</p>
+    </div>
+    <ul id="manualList"></ul>
+  </section>
+
+  <section id="autoTab" hidden>
+    <h2>الرد التلقائي</h2>
+    <div class="row">
+      <span id="autoStatus"></span>
+      <button id="autoToggle"></button>
+    </div>
+    <p class="muted" id="autoCount"></p>
+    <h3>سجل الردود المُرسلة</h3>
+    <ul id="autoLog"></ul>
+  </section>
+
+  <section id="publishTab" hidden>
+    <h2>نشر منشور على الصفحة</h2>
+    <textarea id="postText" rows="4"></textarea>
+    <button id="publish">نشر</button>
+  </section>
+
+  <section id="settingsTab" hidden>
+    <h2>الإعدادات</h2>
+    <label>معرف الصفحة<input id="pageId" inputmode="numeric"></label>
+    <label>توكن الصفحة (يضيفه صاحب الصفحة)<input id="token" type="password"></label>
+    <label class="row"><input id="footer" type="checkbox" style="width:auto"> أضف تنويهًا "رد تلقائي" للردود الآلية</label>
+    <button id="saveSettings">حفظ</button>
+  </section>
+</main>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
