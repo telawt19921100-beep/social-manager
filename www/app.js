@@ -169,7 +169,7 @@ $("saveSettings").onclick = () => {
 };
 
 // Facebook login. AUTH_URL is the deployed worker's /login endpoint.
-const AUTH_URL = "https://injaz-auth.YOUR-SUBDOMAIN.workers.dev/login";
+const AUTH_URL = "https://injaz-auth.telawt19921100.workers.dev/login";
 const Native = window.Capacitor ? {
   Browser: (() => { try { return window.Capacitor.registerPlugin("Browser"); } catch { return undefined; } })(),
   App: (() => { try { return window.Capacitor.registerPlugin("App"); } catch { return undefined; } })(),
