@@ -17,8 +17,8 @@
     --text: #0f172a;
     --muted: #64748b;
     --border: #ece4cf;
-    --navy: #1e3a8a;
-    --navy-deep: #0f172a;
+    --navy: #b8860b;
+    --navy-deep: #1f2937;
     --gold: #b8860b;
     --gold-soft: #f5d37a;
     --primary-ink: #ffffff;
@@ -48,7 +48,7 @@
     display: flex; align-items: center; justify-content: space-between;
   }
   .brand { display: flex; align-items: center; gap: 12px; }
-  .brand img { width: 42px; height: 42px; border-radius: 12px; box-shadow: 0 4px 12px rgba(30,58,138,.25); }
+  .brand img { width: 42px; height: 42px; border-radius: 12px; box-shadow: 0 4px 12px rgba(184,134,11,.25); }
   .brand h1 { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy-deep); letter-spacing: .2px; }
   .brand small { color: var(--muted); font-size: 12px; font-weight: 600; }
 
@@ -105,20 +105,20 @@
     background: #fff; border: 1px solid var(--border); border-radius: 12px;
     outline: none; transition: border-color .15s, box-shadow .15s;
   }
-  input:focus, textarea:focus { border-color: var(--navy); box-shadow: 0 0 0 4px rgba(30,58,138,.10); }
+  input:focus, textarea:focus { border-color: var(--navy); box-shadow: 0 0 0 4px rgba(184,134,11,.12); }
   textarea { resize: vertical; min-height: 64px; }
   input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--navy); margin: 0; }
 
   /* Buttons */
   button {
     font: inherit; font-weight: 700; cursor: pointer;
-    background: linear-gradient(135deg, var(--navy), #2b4fb8);
+    background: linear-gradient(135deg, #d4a017, var(--navy));
     color: var(--primary-ink);
     border: 0; border-radius: 12px; padding: 12px 18px;
-    box-shadow: 0 6px 16px rgba(30,58,138,.22);
+    box-shadow: 0 6px 16px rgba(184,134,11,.22);
     transition: transform .06s ease, box-shadow .15s ease, opacity .15s ease;
   }
-  button:hover { box-shadow: 0 8px 20px rgba(30,58,138,.28); }
+  button:hover { box-shadow: 0 8px 20px rgba(184,134,11,.28); }
   button:active { transform: scale(.98); }
   button:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
   button.secondary {
@@ -174,7 +174,7 @@
     position: relative;
   }
   nav button:hover { box-shadow: none; }
-  nav button.active { color: var(--navy); background: #f3f6fd; }
+  nav button.active { color: var(--navy); background: #fdf8ea; }
   nav button.active::before {
     content: ""; position: absolute; top: -8px; left: 30%; right: 30%; height: 3px;
     border-radius: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-soft));
