@@ -245,7 +245,10 @@ const Native = window.Capacitor ? {
 } : null;
 
 function saveFromPages(pages) {
-  if (!pages.length) return;
+  if (!pages.length) {
+    alert("فيسبوك لم يرسل أي صفحة. تأكد أن صفحتك مفعّلة في إعدادات Injaz Pages ثم أعد تسجيل الدخول.");
+    return;
+  }
   let chosen = pages[0];
   if (pages.length > 1) {
     const list = pages.map((p, i) => `${i + 1}) ${p.name}`).join("\n");
