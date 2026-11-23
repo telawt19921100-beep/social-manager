@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
@@ -17,8 +17,8 @@
     --text: #0f172a;
     --muted: #64748b;
     --border: #ece4cf;
-    --navy: #b8860b;
-    --navy-deep: #1f2937;
+    --navy: #1e7a3a;
+    --navy-deep: #0f3d22;
     --gold: #b8860b;
     --gold-soft: #f5d37a;
     --primary-ink: #ffffff;
@@ -210,10 +210,10 @@
 <body>
 <header class="app-header">
   <div class="brand">
-    <img src="logo.svg" alt="شعار إنجز">
+    <img src="icon-180.png" alt="شعار إنجز">
     <div>
       <h1>إنجز</h1>
-      <small>أدر ردودك في دقائق</small>
+      <small>إدارة ردود صفحتك على فيسبوك</small>
     </div>
   </div>
   <span class="badge" id="autoBadge"><span class="dot"></span><span id="autoStatus">متوقف</span></span>
@@ -319,6 +319,12 @@
       <h3>أو أدخل البيانات يدويًا</h3>
       <label>معرف الصفحة<input id="pageId" inputmode="numeric"></label>
       <label>توكن الصفحة<input id="token" type="password"></label>
+    </div>
+    <div class="card">
+      <h2>الاشتراك</h2>
+      <p id="subStatus" class="hint">جارٍ التحقق...</p>
+      <label>كود التفعيل<input id="activationCode" autocomplete="off" placeholder="XXXXX-XXXXX"></label>
+      <button id="activateBtn" class="block secondary">تفعيل الكود</button>
     </div>
     <div class="card">
       <h2>التنويه</h2>

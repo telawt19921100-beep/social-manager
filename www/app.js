@@ -1,4 +1,4 @@
-import { listComments, replyToComment, publishPost } from "./graph.js";
+import { listComments, replyToComment, publishPost, hideComment, deleteComment } from "./graph.js";
 
 const $ = (id) => document.getElementById(id);
 const DAILY_AUTO_LIMIT = 20;
@@ -22,10 +22,64 @@ document.querySelectorAll("nav button").forEach((b) => b.onclick = () => {
   document.querySelectorAll("main > section").forEach((s) => s.hidden = s.id !== b.dataset.tab);
 });
 
+// Subscription: the worker starts a 2-hour trial on first check and enforces expiry.
+const WORKER_URL = "https://injaz-auth.telawt19921100.workers.dev";
+const subCache = () => store.get("subCache", { state: "trial", endsAt: 0 });
+const SUB_LABEL = { trial: "فترة تجريبية", active: "مشترك", expired: "انتهى الاشتراك" };
+
+function showSub(sub) {
+  const when = new Date(sub.endsAt).toLocaleString("ar");
+  $("subStatus").textContent = `${SUB_LABEL[sub.state]} — ينتهي: ${when}`;
+}
+
+async function postWorker(path, body) {
+  const res = await fetch(WORKER_URL + path, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "failed");
+  return data;
+}
+
+// Falls back to the last known state if the worker cannot be reached.
+async function checkSub() {
+  const s = settings();
+  try {
+    const sub = await postWorker("/status", { pageId: s.pageId, token: s.token });
+    store.set("subCache", sub);
+    showSub(sub);
+    return sub;
+  } catch {
+    const cached = subCache();
+    showSub(cached);
+    return cached;
+  }
+}
+
+$("activateBtn").onclick = async () => {
+  const s = settings();
+  try {
+    const sub = await postWorker("/activate", { pageId: s.pageId, token: s.token, code: $("activationCode").value });
+    store.set("subCache", sub);
+    $("activationCode").value = "";
+    showSub(sub);
+    alert("تم تفعيل الاشتراك.");
+    refresh();
+  } catch (e) { alert("كود غير صحيح أو مستخدم من قبل."); }
+};
+
 // Core: fetch, auto-send within cap, then show what remains for manual review.
 async function refresh() {
   const s = settings();
   if (!s.pageId || !s.token) { $("manualList").textContent = "أضف معرف الصفحة والتوكن في الإعدادات أولًا."; return; }
+  const sub = await checkSub();
+  if (sub.state === "expired") {
+    $("manualList").textContent = "انتهت الفترة التجريبية. أرسل السكرين للتفعيل، ثم أدخل الكود في الإعدادات.";
+    renderAuto();
+    return;
+  }
   let items;
   try { items = await listComments(s.pageId, s.token); }
   catch (e) { $("manualList").textContent = "خطأ في الاتصال: " + e.message; return; }
@@ -83,7 +137,22 @@ function renderManual(pending) {
     ignore.textContent = "تجاهل";
     ignore.className = "secondary";
     ignore.onclick = () => { markHandled(item.id); li.remove(); };
-    li.append(pick, txt, draft, send, ignore);
+    const hide = document.createElement("button");
+    hide.textContent = "إخفاء";
+    hide.className = "secondary";
+    hide.onclick = async () => {
+      try { await hideComment(item.id, settings().token); markHandled(item.id); li.remove(); }
+      catch (e) { alert("فشل الإخفاء: " + e.message); }
+    };
+    const del = document.createElement("button");
+    del.textContent = "حذف";
+    del.className = "danger";
+    del.onclick = async () => {
+      if (!confirm("حذف هذا التعليق نهائيًا؟ لا يمكن التراجع عنه.")) return;
+      try { await deleteComment(item.id, settings().token); markHandled(item.id); li.remove(); }
+      catch (e) { alert("فشل الحذف: " + e.message); }
+    };
+    li.append(pick, txt, draft, send, ignore, hide, del);
     list.append(li);
     rows.push({ item, li, pick, draft });
   }

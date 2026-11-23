@@ -37,6 +37,19 @@ export function replyToComment(commentId, token, message) {
   return graphPost(`/${commentId}/comments`, token, { message });
 }
 
+// Hide a comment from the public (reversible). Page must own the post.
+export function hideComment(commentId, token) {
+  return graphPost(`/${commentId}`, token, { is_hidden: true });
+}
+
+// Permanently delete a comment on the page's own post.
+export async function deleteComment(commentId, token) {
+  const res = await fetch(`${GRAPH}/${commentId}?access_token=${encodeURIComponent(token)}`, { method: "DELETE" });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data;
+}
+
 // Publish a post on the page feed.
 export function publishPost(pageId, token, message) {
   return graphPost(`/${pageId}/feed`, token, { message });

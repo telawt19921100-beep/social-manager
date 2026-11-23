@@ -1,0 +1,12 @@
+name = "injaz-auth"
+main = "src/index.js"
+compatibility_date = "2026-01-01"
+
+[vars]
+# Replace with your worker's URL after the first deploy, e.g. https://injaz-auth.<your-subdomain>.workers.dev
+WORKER_URL = "https://injaz-auth.telawt19921100.workers.dev"
+
+# Subscriptions and activation codes. Create the KV namespace in Cloudflare and paste its id here.
+[[kv_namespaces]]
+binding = "SUBS"
+id = "PASTE_KV_NAMESPACE_ID_HERE"
